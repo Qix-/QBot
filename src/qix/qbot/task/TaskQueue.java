@@ -1,10 +1,11 @@
 package qix.qbot.task;
 
 import java.util.Comparator;
-import java.util.PriorityQueue;
+
+import qix.qbot.util.BetterPriorityQueue;
 
 public class TaskQueue implements Task {
-	private final PriorityQueue<TaskExecution> queue;
+	private final BetterPriorityQueue<TaskExecution> queue;
 	private final String description;
 	private TaskExecution currentTask = null;
 	
@@ -13,7 +14,7 @@ public class TaskQueue implements Task {
 	}
 	
 	public TaskQueue(String description) {
-		this.queue = new PriorityQueue<>(10, TaskExecution.comparator);
+		this.queue = new BetterPriorityQueue<>(10, TaskExecution.comparator);
 		this.description = description;
 	}
 	
@@ -34,7 +35,7 @@ public class TaskQueue implements Task {
 			this.updateTask();
 		}
 		
-		return result;
+		return true;
 	}
 	
 	@Override
@@ -56,6 +57,10 @@ public class TaskQueue implements Task {
 	 * @param priority The {@link Priority} at which to run the task
 	 */
 	public void addTask(Task task, Priority priority) {
+		if (task == null) {
+			return;
+		}
+
 		this.queue.add(new TaskExecution(task, priority));
 		this.updateTask();
 	}
