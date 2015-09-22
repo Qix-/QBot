@@ -1,6 +1,14 @@
 package qix.qbot.task;
 
-public class QBotAdapter extends QBot implements Router {
+import java.util.HashSet;
+import java.util.Set;
+
+import qix.qbot.task.stated.BotFlag;
+import qix.qbot.task.stated.BotState;
+
+public class QBotAdapter <E extends Enum<? extends BotFlag>> extends QBot implements Router, BotState<E> {
+	
+	private final Set<E> flags = new HashSet<>();
 
 	@Override
 	public Task sanityCheck() {
@@ -17,4 +25,13 @@ public class QBotAdapter extends QBot implements Router {
 		return this;
 	}
 
+	@Override
+	public boolean is(E flag) {
+		return this.flags.contains(flag);
+	}
+
+	@Override
+	public void flag(E flag) {
+		this.flags.add(flag);
+	}
 }
