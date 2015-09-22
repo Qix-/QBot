@@ -6,7 +6,7 @@ import qix.qbot.task.TaskQueue;
 
 public abstract class StatedTask <E extends Enum<? extends BotFlag>> extends TaskQueue {
 	
-	private final BotState <E> state;
+	private final BotState<E> state;
 	
 	public StatedTask(BotState<E> state) {
 		this(state, null);
@@ -15,17 +15,15 @@ public abstract class StatedTask <E extends Enum<? extends BotFlag>> extends Tas
 	public StatedTask(BotState<E> state, String description) {
 		super(description);
 		this.state = state;
-		
 		this.addTask(new DelegateTask());
 	}
 	
-	/**
-	 * Override this method to perform main task operations.
-	 * 
-	 * Do NOT override poll() unless you know what you're doing!
-	 * @return Whether or not the task is still running.
-	 */
 	protected abstract boolean pollTask();
+	
+	@Override
+	public final boolean poll() {
+		return super.poll();
+	}
 	
 	protected BotState <E> getState() {
 		return this.state;
