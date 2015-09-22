@@ -1,6 +1,11 @@
 package qix.qbot.test;
 
 import static org.junit.Assert.assertEquals;
+import static qix.qbot.task.Priority.CRITICAL;
+import static qix.qbot.task.Priority.HIGH;
+import static qix.qbot.task.Priority.IDLE;
+import static qix.qbot.task.Priority.LOW;
+import static qix.qbot.task.Priority.NORMAL;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -29,10 +34,10 @@ public class TestTask {
 	@Test
 	public void simpleTasks() {
 		List<Priority> priorities = new LinkedList<>();
-		this.queue.addTask(new PingPongTask<Priority>(priorities, Priority.NORMAL), Priority.NORMAL);
-		this.queue.addTask(new PingPongTask<Priority>(priorities, Priority.NORMAL, 2), Priority.NORMAL);
-		this.queue.addTask(new PingPongTask<Priority>(priorities, Priority.HIGH, 2), Priority.HIGH);
-		this.queue.addTask(new PingPongTask<Priority>(priorities, Priority.IDLE, 3), Priority.IDLE);
+		this.queue.addTask(new PingPongTask<Priority>(priorities, NORMAL), NORMAL);
+		this.queue.addTask(new PingPongTask<Priority>(priorities, NORMAL, 2), NORMAL);
+		this.queue.addTask(new PingPongTask<Priority>(priorities, HIGH, 2), HIGH);
+		this.queue.addTask(new PingPongTask<Priority>(priorities, IDLE, 3), IDLE);
 		
 		int count = 0;
 		while (this.queue.poll()) {
@@ -40,6 +45,23 @@ public class TestTask {
 		}
 		
 		assertEquals(8, count);
+	}
+	
+	@Test
+	public void interruptTask() {
+		List<Priority> priorities = new LinkedList<>();
+		this.queue.addTask(new PingPongTask<Priority>(priorities, NORMAL, 2), NORMAL);
+		this.queue.addTask(new PingPongTask<Priority>(priorities, LOW, 2), LOW);
+		this.queue.poll();
+		
+		this.queue.addTask(new PingPongTask<Priority>(priorities, HIGH, 2), HIGH);
+		this.queue.poll();
+		
+		this.queue.addTask(new PingPongTask<Priority>(priorities, CRITICAL, 1), CRITICAL);
+
+		while (this.queue.poll()) {}
+		
+		TestUtils.assertCollectionEquals(priorities, NORMAL, HIGH, CRITICAL, HIGH, NORMAL, LOW, LOW);
 	}
 
 	static class PingPongTask <E> implements Task {

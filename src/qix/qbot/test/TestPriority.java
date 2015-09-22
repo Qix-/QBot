@@ -1,6 +1,6 @@
 package qix.qbot.test;
 
-import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.*;
 import static qix.qbot.task.Priority.CRITICAL;
 import static qix.qbot.task.Priority.HIGH;
 import static qix.qbot.task.Priority.IDLE;
@@ -72,4 +72,9 @@ public class TestPriority {
 		});
 	}
 
+	@Test
+	public void interrupts() {
+		assertTrue(NORMAL.isInterruptedBy(HIGH));
+		assertFalse(CRITICAL.isInterruptedBy(HIGH));
+	}
 }

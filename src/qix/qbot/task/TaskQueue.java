@@ -102,7 +102,7 @@ public class TaskQueue implements Task {
 
 			@Override
 			public int compare(TaskExecution o1, TaskExecution o2) {
-				return this.priorityComparator.compare(o2.priority, o1.priority);
+				return this.priorityComparator.compare(o1.priority, o2.priority);
 			}
 		};
 	}
