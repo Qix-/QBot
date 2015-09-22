@@ -29,6 +29,10 @@ public class NavigateTo extends RT6Task {
 		this(accessor, new Tile(x, y));
 	}
 	
+	public NavigateTo(ContextAccess accessor, Locations location) {
+		this(accessor, location.getRandom());
+	}
+	
 	@Override
 	protected boolean pollTask() {
 		boolean stepped = this.getContext().movement.step(this.tile);

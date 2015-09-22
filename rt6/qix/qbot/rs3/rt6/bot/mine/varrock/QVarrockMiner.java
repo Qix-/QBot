@@ -6,6 +6,7 @@ import qix.qbot.rs3.rt6.bot.ContextAccess;
 import qix.qbot.rs3.rt6.bot.QBotRS3RT6;
 import qix.qbot.rs3.rt6.bot.RT6Task;
 import qix.qbot.rs3.rt6.task.Debug;
+import qix.qbot.rs3.rt6.task.nav.Locations;
 import qix.qbot.rs3.rt6.task.nav.NavigateTo;
 import qix.qbot.task.Priority;
 import qix.qbot.task.Task;
@@ -21,6 +22,7 @@ public class QVarrockMiner extends QBotRS3RT6 {
 
 		public MainTask(ContextAccess accessor) {
 			super(accessor, "main");
+			this.addTask(new NavigateTo(this, Locations.VARROCK_BANK_EAST));
 			this.addTask(new Debug.PlayerPosition(this), Priority.LOW);
 		}
 
