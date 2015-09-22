@@ -1,4 +1,4 @@
-package qix.qbot.task.rt6;
+package qix.qbot.rs3.rt6.bot;
 
 import qix.qbot.task.stated.BotFlag;
 

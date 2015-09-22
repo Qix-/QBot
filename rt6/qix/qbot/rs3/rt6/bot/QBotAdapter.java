@@ -1,4 +1,4 @@
-package qix.qbot.task;
+package qix.qbot.rs3.rt6.bot;
 
 import java.util.HashSet;
 import java.util.Set;
